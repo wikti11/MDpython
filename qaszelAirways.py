@@ -4,6 +4,7 @@
 # 3 A B - pytanie o to, czy istnieje połączenie z A do B
 # 4 A - pytanie o liczbę połączeń z A
 # Złożoność programu nie powinna być gorsza niż O(n^2+m), gdzie n to liczba miast, a m to liczba komend.
+# Program należy wykonać z użyceim macierzy.
 
 def countAmountOfConnections(matrix, value):
     amountOfConnections = 0

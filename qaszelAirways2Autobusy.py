@@ -4,6 +4,7 @@
 # 5 A - pytanie o listę miast, do których można bezpośrednio dostać się z A
 # Złożoność programu nie powinna być gorsza niż O(p log(n)+n),
 # gdzie p to łączna liczba liczb, które znajdują się na wejściu oraz w prawidłowym wyjściu programu, a n to ilość miast.
+# Program należy wykonać z użyciem listy.
 
 class Node:
     def __init__(self, data):                                       #tworze listę dwukierunkową, ze zmiennymi wartości, następnej komórki i poprzedniej komórki, O(1)?
