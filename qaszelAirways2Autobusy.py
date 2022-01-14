@@ -6,7 +6,7 @@
 # gdzie p to łączna liczba liczb, które znajdują się na wejściu oraz w prawidłowym wyjściu programu, a n to ilość miast.
 
 class Node:
-    def __init__(self, data):
+    def __init__(self, data):                                       #tworze listę dwukierunkową, ze zmiennymi wartości, następnej komórki i poprzedniej komórki, O(1)?
         self.item = data
         self.next = None
         self.prev = None
@@ -22,7 +22,7 @@ class DoublyLinkedList:
             self.start_node = new_node
             return
         n = self.start_node
-        while n.next is not None:
+        while n.next is not None:                                   #dodanie elementu na koniec listy, pojawia się while więc O(n)?
             n = n.next
         new_node = Node(data)
         n.next = new_node
@@ -36,7 +36,7 @@ class DoublyLinkedList:
         else:
             n = self.start_node
             counter = 0
-            while n is not None:
+            while n is not None:                                    #w przeszukiwaniu listy sprawdzam każdy element więc znowu O(n)
                 if n.item == data:
                     counter += 1
                 n = n.next
@@ -46,7 +46,7 @@ class DoublyLinkedList:
         n = self.start_node
         index = 0
         listOfNeighbors = []
-        while n is not None:
+        while n is not None:                                        #w znajdowaniu elementów sąsiednich też przeszukuję całą listę więc znowu O(n)
             index += 1
             if index % 2 != 0:
                 if n.item == value:
@@ -64,15 +64,19 @@ amountOfCities, amountOfCommands = input().split()
 amountOfCities = int(amountOfCities)
 amountOfCommands = int(amountOfCommands)
 newDoublyLinkedList = DoublyLinkedList()
-for i in range(amountOfCommands):                                           #znowu for, czyli złożoność to p?
+for i in range(amountOfCommands):                                           #for, czyli złożoność to p?
     choice, var1, *_ = input().split()
     choice = int(choice)
     var1 = int(var1)
     var2 = int(*_)
-    if choice == 1:
+    if choice == 1:                                                         #dodanie dwóch elementów na koniec listy
         newDoublyLinkedList.insertToEnd(var1)
         newDoublyLinkedList.insertToEnd(var2)
-    elif choice == 4:
+    elif choice == 4:                                                       #znalezienie w liście wystąpień danego elementu O(n)?
         newDoublyLinkedList.search(var1)
-    elif choice == 5:
-        newDoublyLinkedList.findNeighbor(var1)                             #tak na prawdę, nie wiem jaka jest złożoność po wykonaniu wszystkich komend
+    elif choice == 5:                                                       #znajdowanie miast sąsiadujących ze sobą w liście - połączeń O(n)?
+        newDoublyLinkedList.findNeighbor(var1)
+                                                                            #tak na prawdę, nie wiem jaka jest złożoność po wykonaniu wszystkich komend, ale chyba p*n^2
+
+#Sprawdzarka pokazuje mi, że kod spełnia wymogi w 40%
+

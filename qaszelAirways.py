@@ -11,7 +11,7 @@ def countAmountOfConnections(matrix, value):
         for element in row:
             if element == value:
                 amountOfConnections += 1
-    print(amountOfConnections)                                                      #złożoność tutaj to n^2
+    print(amountOfConnections)                                                      #złożoność tutaj to O(n^2)
 
 amountOfCities, amountOfCommands = input().split()                                  #zczytywanie ilości miast i komend
 amountOfCities = int(amountOfCities)
@@ -23,18 +23,20 @@ for i in range(amountOfCommands):                                               
     choice = int(choice)
     var1 = int(var1)
     var2 = int(*_)
-    if choice == 1:
+    if choice == 1:                                                                 #dodanie połączenia, z tego co wiem to jest O(1)
         if [var1, var2] not in connectionsMatrix:
             connectionsMatrix.append([var1, var2])
-    elif choice == 2:
+    elif choice == 2:                                                               #usunięcie połączenia, z tego co wiem to też jest O(1)
         connectionToDelete = [var1, var2]
         if connectionsMatrix and connectionToDelete in connectionsMatrix:
             connectionsMatrix.remove(connectionToDelete)
-    elif choice == 3:
+    elif choice == 3:                                                               #przeszukanie macierzy/tablicy, czyli O(n), więc złożoność tutaj to O(m*n)
         connectionToLookup = [var1, var2]
         if connectionToLookup in connectionsMatrix:
             print("TAK")
         else:
             print("NIE")
     elif choice == 4:
-        countAmountOfConnections(connectionsMatrix, var1)                       #tutaj zliczam elementy w macierzy (wiersze 1-7), więc złożoność wzrasta do n^2*m
+        countAmountOfConnections(connectionsMatrix, var1)                           #tutaj zliczam elementy w macierzy (wiersze 1-7), więc złożoność wzrasta do O(n^2*m)
+
+#Sprawdzarka pokazuje mi, że kod spełnia wymogi w 20%
