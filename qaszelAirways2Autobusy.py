@@ -1,83 +1,50 @@
-# Pierwsza linia wejścia składa się z dwóch liczb, n i m. W kolejnych m liniach znajdują się komendy. Możliwe komendy to:
-# 1 A B - dodanie (dwukierunkowego) połączenia z A do B
-# 4 A - pytanie o liczbę połączeń z A
-# 5 A - pytanie o listę miast, do których można bezpośrednio dostać się z A
-# Złożoność programu nie powinna być gorsza niż O(p log(n)+n),
-# gdzie p to łączna liczba liczb, które znajdują się na wejściu oraz w prawidłowym wyjściu programu, a n to ilość miast.
-# Program należy wykonać z użyciem listy.
+def addVertex(v):
+  global graph
+  global vertices_no
+  if v not in graph:
+    vertices_no = vertices_no + 1
+    graph[v] = []
 
-class Node:
-    def __init__(self, data):                                       #tworze listę dwukierunkową, ze zmiennymi wartości, następnej komórki i poprzedniej komórki, O(1)?
-        self.item = data
-        self.next = None
-        self.prev = None
+def addEdge(v1, v2):
+  global graph
+  if v1 in graph and v2 in graph:
+    temp = v2
+    graph[v1].append(temp)
 
-class DoublyLinkedList:
-    def __init__(self):
-        self.head = None
-        self.start_node = None
+def bfsList(graph, value):
+    listOfThem = []
+    for vertex in graph:
+        if vertex == value:
+            listOfThem = graph[value]
+    listOfThem.sort()
+    print(*listOfThem, sep=" ")
 
-    def insertToEnd(self, data):
-        if self.start_node is None:
-            new_node = Node(data)
-            self.start_node = new_node
-            return
-        n = self.start_node
-        while n.next is not None:                                   #dodanie elementu na koniec listy, pojawia się while więc O(n)?
-            n = n.next
-        new_node = Node(data)
-        n.next = new_node
-        new_node.prev = n
+def bfsAmount(graph, value):
+    listOfThem = []
+    for vertex in graph:
+        if vertex == value:
+            listOfThem = graph[value]
+    print(len(listOfThem))
 
-
-    def search(self, data):
-        if self.start_node is None:
-            print("0")
-            return
-        else:
-            n = self.start_node
-            counter = 0
-            while n is not None:                                    #w przeszukiwaniu listy sprawdzam każdy element więc znowu O(n)
-                if n.item == data:
-                    counter += 1
-                n = n.next
-            print(counter)
-
-    def findNeighbor(self, value):
-        n = self.start_node
-        index = 0
-        listOfNeighbors = []
-        while n is not None:                                        #w znajdowaniu elementów sąsiednich też przeszukuję całą listę więc znowu O(n)
-            index += 1
-            if index % 2 != 0:
-                if n.item == value:
-                    listOfNeighbors.append(n.next.item)
-            else:
-                if n.item == value and n is not None:
-                    listOfNeighbors.append(n.prev.item)
-            n = n.next
-        listOfNeighbors.sort()
-        print(*listOfNeighbors, sep=" ")
-
-
-
-amountOfCities, amountOfCommands = input().split()
+amountOfCities, amountOfRoads = input().split()
 amountOfCities = int(amountOfCities)
-amountOfCommands = int(amountOfCommands)
-newDoublyLinkedList = DoublyLinkedList()
-for i in range(amountOfCommands):                                           #for, czyli złożoność to p?
+amountOfRoads = int(amountOfRoads)
+graph = {}
+vertices_no = 0
+visited = []
+queue = []
+for i in range(amountOfCities):
+    addVertex(i)
+
+for j in range(amountOfRoads):
     choice, var1, *_ = input().split()
     choice = int(choice)
     var1 = int(var1)
     var2 = int(*_)
-    if choice == 1:                                                         #dodanie dwóch elementów na koniec listy
-        newDoublyLinkedList.insertToEnd(var1)
-        newDoublyLinkedList.insertToEnd(var2)
-    elif choice == 4:                                                       #znalezienie w liście wystąpień danego elementu O(n)?
-        newDoublyLinkedList.search(var1)
-    elif choice == 5:                                                       #znajdowanie miast sąsiadujących ze sobą w liście - połączeń O(n)?
-        newDoublyLinkedList.findNeighbor(var1)
-                                                                            #tak na prawdę, nie wiem jaka jest złożoność po wykonaniu wszystkich komend, ale chyba p*n^2
-
-#Sprawdzarka pokazuje mi, że kod spełnia wymogi w 40%
-
+    if choice == 1:
+        addEdge(var1, var2)
+        addEdge(var2, var1)
+    if choice == 4:
+        bfsAmount(graph, var1)
+    if choice == 5:
+        bfsList(graph, var1)
