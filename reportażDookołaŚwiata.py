@@ -1,46 +1,56 @@
-def addVertex(v):
-  global graph
-  global vertices_no
-  if v not in graph:
-    vertices_no = vertices_no + 1
-    graph[v] = []
+class Graph:
 
-def addEdge(v1, v2):
-  global graph
-  if v1 in graph and v2 in graph:
-    temp = v2
-    graph[v1].append(temp)
+    def __init__(self, V):
+        self.V = V
+        self.adj = [[] for i in range(V)]
 
-def bfs(visited, graph, node, result):
-  visited.append(node)
-  queue.append(node)
-  while queue:
-    s = queue.pop(0)
-    result.append(s)
-    for neighbour in graph[s]:
-      if neighbour not in visited:
-        visited.append(neighbour)
-        queue.append(neighbour)
+    def addEdge(self, src, des):
+        self.adj[src].append(des)
+        self.adj[des].append(src)
 
-amountOfCities, amountOfRoads = input().split()
-amountOfCities = int(amountOfCities)
-amountOfRoads = int(amountOfRoads)
-graph = {}
-vertices_no = 0
-visited = []
-queue = []
-for i in range(amountOfCities):
-    addVertex(i)
+    def minEdgeDFSUtil(self, visited, src, des, min_num_of_edges, edge_count):
+        visited[src] = True
+        if src == des:
+            if min_num_of_edges > edge_count:
+                min_num_of_edges = edge_count
+        else:
+            for v in self.adj[src]:
+                if not visited[v]:
+                    edge_count += 1
+                    min_num_of_edges, edge_count = \
+                        self.minEdgeDFSUtil(visited, v, des, min_num_of_edges, edge_count)
+        visited[src] = False
+        edge_count -= 1
+        return min_num_of_edges, edge_count
 
-for j in range(amountOfRoads):
-    cityA, cityB = input().split()
-    cityA = int(cityA)
-    cityB = int(cityB)
-    addEdge(cityA, cityB)
-    addEdge(cityB, cityA)
+    def minEdgeDFS(self, u, v):
+        visited = [False] * self.V
+        min_num_of_edges = float('inf')
+        edge_count = 0
+        min_num_of_edges, edge_count = \
+            self.minEdgeDFSUtil(visited, u, v, min_num_of_edges, edge_count)
+        return min_num_of_edges
 
-print(graph)
-result = []
-bfs(visited, graph, 0, result)
-result.reverse()
-print(*result, sep= " ")
+
+if __name__ == "__main__":
+    amountOfCities, amountOfRoads = input().split()
+    amountOfCities = int(amountOfCities)
+    amountOfRoads = int(amountOfRoads)
+    g = Graph(amountOfCities)
+    listOfConnections = [0]
+    connectionsMatrix = [[0 for x in range(amountOfCities)] for y in range(amountOfCities)]
+
+    for i in range(amountOfRoads):
+        cityA, cityB = input().split()
+        cityA = int(cityA)
+        cityB = int(cityB)
+        g.addEdge(cityA, cityB)
+
+    for j in range(amountOfCities):
+        if g.minEdgeDFS(0, j) != 0:
+            for k in range(g.minEdgeDFS(0, j)):
+                listOfConnections.append(j)
+    sortedList = sorted(listOfConnections, key=listOfConnections.count)
+    anotherList = list(dict.fromkeys(sortedList))
+    anotherList.reverse()
+    print(*anotherList, sep=" ")
